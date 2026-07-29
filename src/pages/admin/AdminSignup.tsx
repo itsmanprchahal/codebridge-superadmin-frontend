@@ -16,6 +16,7 @@ export default function AdminSignup() {
     const Navigate = useNavigate();
 
     const handleSubmit = async (e: any) => {
+        
 
         e.preventDefault();
 
@@ -34,11 +35,11 @@ export default function AdminSignup() {
         };
 
         try {
-
             const response = await axios.post(
-                "http://localhost:8000/api/admin/login",
+                "https://codebridgeit-superadmin-78m6dyuuy-itsmanrpchahals-projects.vercel.app/admin/signup",
                 formdata
             );
+            console.log("✅ Form Data:", formdata);
             toast.success(response.data.message);
             Navigate("/admin/login");
 
@@ -47,6 +48,7 @@ export default function AdminSignup() {
         catch (error: any) {
             toast.error(error.response.data.message);
         }
+        
 
     };
 

@@ -25,7 +25,7 @@ export default function AdminLogin() {
         try {
 
             const response = await axios.post(
-                "http://localhost:8000/api/admin/login",
+                "https://codebridgeit-superadmin-7fsv9sac3-itsmanrpchahals-projects.vercel.app/admin/login",
                 formdata
             );
             localStorage.setItem(
