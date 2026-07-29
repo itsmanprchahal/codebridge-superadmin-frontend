@@ -37,7 +37,7 @@ export default function AdminSignup() {
         try {
             const response = await axios.post(
                 // https://codebridgeit-superadmin-pkdsgotje-itsmanrpchahals-projects.vercel.app/api/test
-                "https://codebridgeit-superadmin-pkdsgotje-itsmanrpchahals-projects.vercel.app/api/admin/signup",
+                "https://codebridgeit-superadmin-7fsv9sac3-itsmanrpchahals-projects.vercel.app/api/test",
                 formdata
             );
             console.log("✅ Form Data:", formdata);
