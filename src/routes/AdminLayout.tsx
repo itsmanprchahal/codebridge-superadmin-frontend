@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
-import { FiGrid, FiBookOpen, FiServer, FiLogOut } from 'react-icons/fi'
+import { FiGrid, FiBookOpen } from 'react-icons/fi'
 import CustomButton from "../component/CustomButton";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../app/store";
