@@ -2,8 +2,10 @@ import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import CustomButton from '../../component/CustomButton'
 import { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../app/store';
+import { signupAdmin } from '../../features/auth/authSlice';
 
 
 export default function AdminSignup() {
@@ -13,44 +15,33 @@ export default function AdminSignup() {
     const [password, setPassword] = useState<string>("");
     const [confirmpassword, setConfirmpassword] = useState<string>("");
 
-    const Navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: any) => {
-        
-
         e.preventDefault();
 
         if (password !== confirmpassword) {
-
-            toast.error("Password and Confirm Password do not match.");
-
+            toast.error("Password mismatch");
             return;
         }
 
-        const formdata = {
-            fullname,
-            email,
-            password,
-            confirmpassword
-        };
+        const result = await dispatch(
+            signupAdmin({
+                fullname: fullname,
+                email,
+                password,
+                confirmpassword
+            })
+        );
 
-        try {
-            const response = await axios.post(
-                // https://codebridgeit-superadmin-pkdsgotje-itsmanrpchahals-projects.vercel.app/api/test
-                "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/admin/signup",
-                formdata
-            );
-            console.log("✅ Form Data:", formdata);
-            toast.success(response.data.message);
-            Navigate("/admin/login");
-
+        if (signupAdmin.fulfilled.match(result)) {
+            toast.success("Signup success");
+            navigate("/admin/dashboard"); // ya login
+        } else {
+            toast.error(result.payload as string);
         }
-
-        catch (error: any) {
-            toast.error(error.response.data.message);
-        }
-        
-
     };
 
     return (

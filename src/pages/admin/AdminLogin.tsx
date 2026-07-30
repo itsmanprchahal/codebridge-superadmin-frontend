@@ -3,8 +3,10 @@ import { FaEnvelope, FaLock } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import CustomButton from '../../component/CustomButton'
 import { useState } from 'react'
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import { loginAdmin, } from '../../features/auth/authSlice'
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../app/store';
 
 export default function AdminLogin() {
 
@@ -12,38 +14,22 @@ export default function AdminLogin() {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     const submitHandle = async (e: any) => {
-
         e.preventDefault();
 
-        const formdata = {
-            email,
-            password
-        };
+        const formdata = { email, password };
 
         try {
-
-            const response = await axios.post(
-                "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/admin/login",
-                formdata
-            );
-            localStorage.setItem(
-                "token",
-                response.data.token
-            );
-            localStorage.setItem(
-                "user",
-                JSON.stringify(response.data.user)
-            );
-
-            toast.success(response.data.message);
+            const res = await dispatch(loginAdmin(formdata)).unwrap();
+            
+            toast.success(res.message);
             navigate("/admin/dashboard");
-        }
-        catch (error: any) {
-            toast.error(error.response.data.message);
-        }
 
+        } catch (err: any) {
+            toast.error(err);
+        }
     };
 
     return (
@@ -114,7 +100,7 @@ export default function AdminLogin() {
                     Not an admin?
 
                     <Link
-                        to="/admin/Signup"
+                        to="/admin/signup"
                         className="text-blue-600 font-semibold ml-2"
                     >
                         Create new Account
@@ -128,3 +114,5 @@ export default function AdminLogin() {
 
     )
 }
+
+

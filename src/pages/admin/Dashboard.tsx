@@ -44,29 +44,6 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen text-sm">
 
-      {/* Left sidebar */}
-      <aside className="w-64 bg-white border-r hidden md:flex flex-col">
-        <div className="p-6 border-b">
-          <h2 className="text-xl font-bold">Admin Panel</h2>
-          <p className="text-gray-500 text-xs mt-1">Welcome back</p>
-        </div>
-
-        <nav className="flex-1 p-4 space-y-2">
-          <MenuItem icon={<FiGrid />} label="Dashboard" active />
-          <MenuItem icon={<FiBox />} label="Products" />
-          <MenuItem icon={<FiServer />} label="Services" />
-          <MenuItem icon={<FiBox />} label="Orders" />
-          <MenuItem icon={<FiServer />} label="Reports" />
-        </nav>
-
-        <div className="p-4">
-          <button className="flex items-center gap-3 w-full text-left px-4 py-3 rounded-md hover:bg-gray-100 text-red-600">
-            <FiLogOut />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
-
       {/* Main content (right) */}
       <main className="flex-1 overflow-auto bg-gray-50">
         <div className="p-6 max-w-7xl mx-auto">
