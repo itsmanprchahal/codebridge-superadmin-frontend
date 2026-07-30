@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../api/axios";
 import type { AuthResponse } from "./types";
-import { useNavigate } from "react-router-dom";
 
 interface AuthState {
     user: AuthResponse["user"] | null;

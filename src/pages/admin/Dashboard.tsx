@@ -1,14 +1,3 @@
-import React from 'react'
-import { FiGrid, FiBox, FiServer, FiLogOut } from 'react-icons/fi'
-
-function MenuItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
-  return (
-    <button className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-md hover:bg-gray-100 ${active ? 'bg-gray-100 font-semibold' : 'text-gray-700'}`}>
-      <span className="text-lg">{icon}</span>
-      <span>{label}</span>
-    </button>
-  )
-}
 
 function LineChartSVG() {
   return (
