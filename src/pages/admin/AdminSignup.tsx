@@ -1,5 +1,5 @@
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CustomButton from '../../component/CustomButton'
 import { useState } from 'react';
 import { toast } from 'react-toastify';
