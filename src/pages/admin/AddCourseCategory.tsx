@@ -12,28 +12,60 @@ export default function AddCourseCategory() {
 
     const [iconPreview, setIconPreview] = useState("");
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async () => {
-        const formData = new FormData();
-
-        formData.append("categoryname", categoryName);
-        formData.append("heading", heading);
-        formData.append("sub_heading", subHeading);
-
-        if (icon) {
-            formData.append("icon", icon);
+        if (!categoryName || !heading || !subHeading || !icon) {
+            alert("Please fill all fields.");
+            return;
         }
 
-        console.log("===== FORM DATA =====");
-
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
-
         try {
-            const res = await API.post("/course-category", formData);
+            setLoading(true);
+
+            const formData = new FormData();
+
+            formData.append("categoryname", categoryName);
+            formData.append("heading", heading);
+            formData.append("sub_heading", subHeading);
+            formData.append("icon", icon);
+
+            console.log("===== FORM DATA =====");
+
+            formData.forEach((value, key) => {
+                console.log(key, value);
+            });
+
+            const res = await API.post(
+                "/course-category",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
             console.log(res.data);
-        } catch (err) {
-            console.log(err);
+
+            alert("Course Category Added Successfully.");
+
+            // Reset form
+            setCategoryName("");
+            setHeading("");
+            setSubHeading("");
+            setIcon(null);
+            setIconPreview("");
+
+        } catch (err: any) {
+            console.log(err.response?.data || err);
+
+            alert(
+                err.response?.data?.message ||
+                "Something went wrong."
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
