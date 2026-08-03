@@ -1,5 +1,5 @@
-import { FiPlus, FiSearch, FiEdit2, FiTrash2 } from "react-icons/fi";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { FiSearch, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
 import CustomButton from "../../component/CustomButton";
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
@@ -8,8 +8,6 @@ export default function CourseCategoryList() {
     const [categories, setCategories] = useState([]);
 
     const [search, setSearch] = useState("");
-
-    const { id } = useParams();
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -55,6 +53,10 @@ export default function CourseCategoryList() {
             .includes(search.toLowerCase())
     );
 
+
+    function setCurrentPage(_arg0: number) {
+        throw new Error("Function not implemented.");
+    }
 
     return (
         <div className="min-h-screen bg-slate-100 p-8">

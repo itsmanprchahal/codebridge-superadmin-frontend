@@ -1,6 +1,6 @@
 import { FiUpload } from "react-icons/fi";
 import CustomButton from "../../component/CustomButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "../../api/axios";
 import { useLocation } from "react-router-dom";
 
@@ -15,8 +15,6 @@ export default function AddCourseCategory() {
 
     const [iconPreview, setIconPreview] = useState(location.state?.icon);
 
-    const [loading, setLoading] = useState(false);
-
     const handleSubmit = async () => {
         // if (!categoryName || !heading || !subHeading || !icon) {
         //     alert("Please fill all fields.");
@@ -24,14 +22,14 @@ export default function AddCourseCategory() {
         // }
 
         try {
-            setLoading(true);
+
 
             const formData = new FormData();
 
             formData.append("categoryname", categoryName);
             formData.append("heading", heading);
             formData.append("sub_heading", subHeading);
-            formData.append("icon", icon);
+            formData.append("icon", icon as File);
 
             let res;
 
@@ -70,8 +68,6 @@ export default function AddCourseCategory() {
                 err.response?.data?.message ||
                 "Something went wrong."
             );
-        } finally {
-            setLoading(false);
         }
     };
 
