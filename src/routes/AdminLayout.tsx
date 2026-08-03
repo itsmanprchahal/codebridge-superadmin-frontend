@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import type { ReactNode } from "react";
 import { FiGrid, FiBookOpen } from 'react-icons/fi'
 import CustomButton from "../component/CustomButton";
@@ -6,11 +6,16 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../app/store";
 import { logout } from "../features/auth/authSlice";
 
-function SidebarItem({ to, icon, label }: { to: string; icon: ReactNode; label: string }) {
+function SidebarItem({ to, icon, label, activePaths }: { to: string; icon: ReactNode; label: string; activePaths?: string[] }) {
+  const location = useLocation();
+  const isActive = activePaths
+    ? activePaths.some((path) => location.pathname.startsWith(path))
+    : location.pathname === to;
+
   return (
     <NavLink
       to={to}
-      className={({ isActive }) =>
+      className={() =>
         `flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl transition ${
           isActive
             ? 'bg-red-600 text-white font-semibold'
@@ -44,13 +49,17 @@ export default function AdminLayout() {
 
         <nav className="flex-1 overflow-hidden px-4 py-5 space-y-2">
           <SidebarItem to="/admin/dashboard" icon={<FiGrid />} label="Dashboard" />
-          <SidebarItem to="/admin/add-course" icon={<FiBookOpen />} label="Add Course" />
-          
+          <SidebarItem
+            to="/admin/course-categories"
+            icon={<FiBookOpen />}
+            label="Course Categories"
+            activePaths={["/admin/course-categories", "/admin/add-course-category"]}
+          />
         </nav>
 
         <div className="p-5 border-t">
           
-          <CustomButton onClick={logoutHandle} label="Logout" variant="primary" type="submit"/>
+          <CustomButton className="w-full" onClick={logoutHandle} label="Logout" variant="primary" type="submit"/>
         </div>
       </aside>
 

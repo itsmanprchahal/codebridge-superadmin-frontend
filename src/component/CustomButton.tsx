@@ -15,8 +15,51 @@ interface CustomButtonProps {
     disabled?: boolean;
     loading?: boolean;
     className?: string;
+    fullWidth?: boolean;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
+
+const Spinner = () => {
+    return (
+        <div className="flex justify-center items-center">
+            <div className="loader"></div>
+
+            <style>{`
+        .loader {
+          width: 36px;
+          --b: 8px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          padding: 1px;
+          background: conic-gradient(#0000 10%, #ffffff) content-box;
+
+          -webkit-mask:
+            repeating-conic-gradient(
+              #0000 0deg,
+              #000 1deg 20deg,
+              #0000 21deg 36deg
+            ),
+            radial-gradient(
+              farthest-side,
+              #0000 calc(100% - var(--b) - 1px),
+              #000 calc(100% - var(--b))
+            );
+
+          -webkit-mask-composite: destination-in;
+          mask-composite: intersect;
+
+          animation: loaderSpin 1s infinite steps(10);
+        }
+
+        @keyframes loaderSpin {
+          to {
+            transform: rotate(1turn);
+          }
+        }
+      `}</style>
+        </div>
+    );
+};
 
 const CustomButton: React.FC<CustomButtonProps> = ({
     label,
@@ -26,13 +69,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     disabled = false,
     loading = false,
     className = "",
+    fullWidth = false,
     onClick,
 }) => {
     const variants: Record<
         NonNullable<CustomButtonProps["variant"]>,
         string
     > = {
-        primary: "bg-gradient-to-r w-full from-red-500 to-rose-600  hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/40 text-white",
+        primary: "bg-gradient-to-r from-red-500 to-rose-600 h-[50px]  hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/40 text-white",
         secondary: "bg-gray-600 hover:bg-gray-700 text-white",
         success: "bg-green-600 hover:bg-green-700 text-white",
         danger: "bg-red-600 hover:bg-red-700 text-white",
@@ -58,14 +102,22 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         transition-all
         duration-300
         cursor-pointer
-        disabled:opacity-50
+        disabled:opacity-80
         disabled:cursor-not-allowed
+         flex items-center justify-center
         ${variants[variant]}
         ${sizes[size]}
-        ${className}
+          ${fullWidth ? "w-full" : "w-auto"}
+         ${className}
       `}
         >
-            {loading ? "Loading..." : label}
+            {loading ? (
+
+                <Spinner />
+
+            ) : (
+                label
+            )}
         </button>
     );
 };

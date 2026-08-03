@@ -2,20 +2,21 @@ import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig 
 import { toast } from "react-toastify";
 
 const API = axios.create({
-    baseURL: "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/",
+  // baseURL: "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/",
+  baseURL: "http://localhost:8000/api/",
 })
 
 API.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-        const token = localStorage.getItem("token");
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem("token");
 
-        if (token && config.headers) {
-            config.headers.Authorization = `Bearer ${token}`;
-            config.headers["Content-Type"] = `application/json`;
-        }
-        return config;
-    },
-     (error: AxiosError) => {
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Content-Type"] = `application/json`;
+    }
+    return config;
+  },
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 )
@@ -38,7 +39,7 @@ API.interceptors.response.use(
       toast.error("Session expired, login again");
       window.location.href = "/admin/login";
     }
-    
+
 
     return Promise.reject(error);
   }

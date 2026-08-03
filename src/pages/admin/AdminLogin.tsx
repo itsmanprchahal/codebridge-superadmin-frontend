@@ -5,8 +5,8 @@ import CustomButton from '../../component/CustomButton'
 import { useState } from 'react'
 import { toast } from 'react-toastify';
 import { loginAdmin, } from '../../features/auth/authSlice'
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../../app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../../app/store';
 
 export default function AdminLogin() {
 
@@ -15,6 +15,8 @@ export default function AdminLogin() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
+    
+    const { loading } = useSelector((state: RootState) => state.auth);
 
     const submitHandle = async (e: any) => {
         e.preventDefault();
@@ -23,7 +25,7 @@ export default function AdminLogin() {
 
         try {
             const res = await dispatch(loginAdmin(formdata)).unwrap();
-            
+
             toast.success(res.message);
             navigate("/admin/dashboard");
 
@@ -91,14 +93,12 @@ export default function AdminLogin() {
 
                     </div>
 
-                    <CustomButton type='submit' label='Login' variant='primary' />
+                    <CustomButton className='w-full' type='submit' label='Login' variant='primary' loading={loading} />
 
                 </form>
 
                 <p className="text-center mt-8">
-
                     Not an admin?
-
                     <Link
                         to="/admin/signup"
                         className="text-blue-600 font-semibold ml-2"
