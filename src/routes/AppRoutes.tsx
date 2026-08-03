@@ -5,6 +5,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminLayout from "./AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
 import AddCourse from "../pages/admin/AddCourse";
+import AddCourseCategory from "../pages/admin/AddCourseCategory";
 
 export default function AppRoutes() {
     return (
@@ -17,7 +18,12 @@ export default function AppRoutes() {
                 <Route element={<PrivateRoute />}>
                     <Route element={<AdminLayout />}>
                         <Route path="/admin/dashboard" element={<Dashboard />} />
-                        <Route path="/admin/add-course" element={<AddCourse />} />
+                        <Route path="/admin/course-categories" element={<AddCourse />} />
+                        <Route path="/admin/add-course-category" element={<AddCourseCategory />} />
+                        <Route
+                            path="/admin/add-course-category/:id"
+                            element={<AddCourseCategory />}
+                        />
                     </Route>
                 </Route>
             </Routes>
