@@ -2,8 +2,8 @@ import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig 
 import { toast } from "react-toastify";
 
 const API = axios.create({
-  // baseURL: "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/",
-  baseURL: "http://localhost:8000/api/",
+  baseURL: "https://codebridgeit-superadmin-8xtmzj182-itsmanrpchahals-projects.vercel.app/api/",
+  // baseURL: "http://localhost:8000/api/",
 })
 
 API.interceptors.request.use(
