@@ -1,24 +1,27 @@
 import { FiUpload } from "react-icons/fi";
 import CustomButton from "../../component/CustomButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import API from "../../api/axios";
+import { useLocation } from "react-router-dom";
 
 export default function AddCourseCategory() {
+    const location = useLocation();
+    const updateCourseCategory = location?.state;
 
-    const [categoryName, setCategoryName] = useState("");
-    const [heading, setHeading] = useState("");
-    const [subHeading, setSubHeading] = useState("");
+    const [categoryName, setCategoryName] = useState(location?.state?.categoryname);
+    const [heading, setHeading] = useState(location?.state?.heading);
+    const [subHeading, setSubHeading] = useState(location?.state?.sub_heading);
     const [icon, setIcon] = useState<File | null>(null);
 
-    const [iconPreview, setIconPreview] = useState("");
+    const [iconPreview, setIconPreview] = useState(location.state?.icon);
 
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-        if (!categoryName || !heading || !subHeading || !icon) {
-            alert("Please fill all fields.");
-            return;
-        }
+        // if (!categoryName || !heading || !subHeading || !icon) {
+        //     alert("Please fill all fields.");
+        //     return;
+        // }
 
         try {
             setLoading(true);
@@ -30,27 +33,30 @@ export default function AddCourseCategory() {
             formData.append("sub_heading", subHeading);
             formData.append("icon", icon);
 
-            console.log("===== FORM DATA =====");
+            let res;
 
-            formData.forEach((value, key) => {
-                console.log(key, value);
-            });
-
-            const res = await API.post(
-                "/course-category",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            if (updateCourseCategory) {
+                // EDIT
+                res = await API.put(
+                    `/course-category/${updateCourseCategory.id}`,
+                    formData
+                );
+            } else {
+                // ADD
+                res = await API.post(
+                    "/course-category",
+                    formData
+                );
+            }
 
             console.log(res.data);
 
-            alert("Course Category Added Successfully.");
+            alert(
+                updateCourseCategory
+                    ? "Course Category Updated Successfully."
+                    : "Course Category Added Successfully."
+            );
 
-            // Reset form
             setCategoryName("");
             setHeading("");
             setSubHeading("");
@@ -69,6 +75,7 @@ export default function AddCourseCategory() {
         }
     };
 
+
     return (
 
         <div className="min-h-screen bg-slate-100 p-8">
@@ -81,7 +88,7 @@ export default function AddCourseCategory() {
 
                     <h1 className="text-4xl font-bold">
 
-                        Add Course Category
+                        {location?.state ? 'Update' : 'Add'} Course Category
 
                     </h1>
 
@@ -201,7 +208,7 @@ export default function AddCourseCategory() {
                     <div className="mt-10 flex justify-end">
 
                         <CustomButton
-                            label="Save Category"
+                            label={location?.state ? "Update Category" : "Save Category"}
                             variant="primary"
                             className="px-10"
                             onClick={handleSubmit}

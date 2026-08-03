@@ -1,10 +1,60 @@
 import { FiPlus, FiSearch, FiEdit2, FiTrash2 } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../component/CustomButton";
+import { useEffect, useState } from "react";
+import API from "../../api/axios";
 
 export default function CourseCategoryList() {
+    const [categories, setCategories] = useState([]);
+
+    const [search, setSearch] = useState("");
+
+    const { id } = useParams();
 
     const navigate = useNavigate();
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+
+        try {
+
+            const res = await API.get("/course-category");
+
+            setCategories(res.data.data);
+
+        } catch (err) {
+
+            console.log(err);
+
+        }
+    }
+
+    const deleteCategory = async (id: any) => {
+
+        try {
+
+            await API.delete(`/course-category/${id}`);
+
+            alert("Category Deleted Successfully.");
+
+            fetchCategories();
+
+        } catch (err) {
+
+            console.log(err);
+
+        }
+
+    };
+
+    const filteredCategories = categories.filter((item: any) =>
+        item.categoryname
+            .toLowerCase()
+            .includes(search.toLowerCase())
+    );
+
 
     return (
         <div className="min-h-screen bg-slate-100 p-8">
@@ -41,6 +91,11 @@ export default function CourseCategoryList() {
                             <input
                                 type="text"
                                 placeholder="Search category..."
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                    setCurrentPage(1);
+                                }}
                                 className="w-full h-14 rounded-2xl border border-slate-300 pl-14 pr-5 outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600"
                             />
 
@@ -70,7 +125,7 @@ export default function CourseCategoryList() {
                                 <th className="p-5 text-left">Category</th>
                                 <th className="p-5 text-left">Heading</th>
                                 <th className="p-5 text-left">Sub Heading</th>
-                                <th className="p-5 text-left">Created</th>
+
                                 <th className="p-5 text-center">Action</th>
 
                             </tr>
@@ -79,44 +134,55 @@ export default function CourseCategoryList() {
 
                         <tbody>
 
-                            {[1, 2, 3].map((item) => (
+                            {filteredCategories.map((item: any) => (
 
-                                <tr
-                                    key={item}
-                                    className="border-t hover:bg-slate-50"
-                                >
+                                <tr key={item.id}>
 
                                     <td className="p-5">
-                                        <div className="w-12 h-12 rounded-xl bg-indigo-100"></div>
-                                    </td>
 
-                                    <td className="p-5 font-semibold">
-                                        Web Development
-                                    </td>
+                                        <img
+                                            src={item.icon}
+                                            className="w-12 h-12 rounded-xl object-cover"
+                                            alt={item.categoryname}
+                                        />
 
-                                    <td className="p-5">
-                                        Learn Full Stack
                                     </td>
 
                                     <td className="p-5">
-                                        React | Node | PostgreSQL
+
+                                        {item.categoryname}
+
                                     </td>
 
                                     <td className="p-5">
-                                        30 Jul 2026
+
+                                        {item.heading}
+
                                     </td>
+
+                                    <td className="p-5">
+
+                                        {item.sub_heading}
+
+                                    </td>
+
+
 
                                     <td className="p-5">
 
                                         <div className="flex justify-center gap-3">
 
-                                            <button className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                                            <button
+                                                onClick={() => navigate(`/admin/add-course-category/${item.id}`, { state: item },)}
+                                                className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
 
                                                 <FiEdit2 />
 
                                             </button>
 
-                                            <button className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+                                            <button
+                                                onClick={() => deleteCategory(item.id)}
+                                                className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
 
                                                 <FiTrash2 />
 
@@ -126,6 +192,7 @@ export default function CourseCategoryList() {
 
                                     </td>
 
+
                                 </tr>
 
                             ))}
@@ -133,6 +200,7 @@ export default function CourseCategoryList() {
                         </tbody>
 
                     </table>
+
 
                 </div>
 

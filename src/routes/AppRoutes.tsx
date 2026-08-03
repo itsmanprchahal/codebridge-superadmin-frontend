@@ -20,6 +20,10 @@ export default function AppRoutes() {
                         <Route path="/admin/dashboard" element={<Dashboard />} />
                         <Route path="/admin/course-categories" element={<AddCourse />} />
                         <Route path="/admin/add-course-category" element={<AddCourseCategory />} />
+                        <Route
+                            path="/admin/add-course-category/:id"
+                            element={<AddCourseCategory />}
+                        />
                     </Route>
                 </Route>
             </Routes>
