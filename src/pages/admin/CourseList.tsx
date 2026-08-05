@@ -86,7 +86,6 @@ export default function CourseList() {
 
             </div>
             {/* test */}
-            {/* Button */}
 
             <Link to="/admin/add-course-list">
 

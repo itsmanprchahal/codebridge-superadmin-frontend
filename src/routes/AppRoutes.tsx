@@ -6,6 +6,8 @@ import AdminLayout from "./AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
 import AddCourse from "../pages/admin/AddCourse";
 import AddCourseCategory from "../pages/admin/AddCourseCategory";
+import CourseList from "../pages/admin/CourseList";
+import AddCourseList from "../pages/admin/AddCourseList";
 
 export default function AppRoutes() {
     return (
@@ -23,6 +25,13 @@ export default function AppRoutes() {
                         <Route
                             path="/admin/add-course-category/:id"
                             element={<AddCourseCategory />}
+                        />
+                        <Route path="/admin/course-list" element={<CourseList />} />
+                        <Route path="/admin/courselist" element={<CourseList />} />
+                        <Route path="/admin/add-course-list" element={<AddCourseList />} />
+                        <Route
+                            path="/admin/add-course-list/:id"
+                            element={<AddCourseList />}
                         />
                     </Route>
                 </Route>
