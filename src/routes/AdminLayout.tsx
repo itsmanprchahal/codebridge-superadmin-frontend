@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import type { ReactNode } from "react";
-import { FiGrid, FiBookOpen, FiUsers, FiSettings, FiLogOut, FiBookmark } from 'react-icons/fi'
+import { FiGrid, FiBookOpen, FiLogOut, FiBookmark } from 'react-icons/fi'
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../app/store";
 import { logout } from "../features/auth/authSlice";
@@ -15,10 +15,9 @@ function SidebarItem({ to, icon, label, activePaths }: { to: string; icon: React
     <NavLink
       to={to}
       className={() =>
-        `flex items-center justify-between gap-3 w-full text-left px-4 py-3 rounded-xl transition ${
-          isActive
-            ? 'bg-red-600 text-white font-semibold'
-            : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+        `flex items-center justify-between gap-3 w-full text-left px-4 py-3 rounded-xl transition ${isActive
+          ? 'bg-red-600 text-white font-semibold'
+          : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
         }`
       }
     >
@@ -68,7 +67,7 @@ export default function AdminLayout() {
             label="Course List"
             activePaths={["/admin/course-list", "/admin/add-course-list", "/admin/courselist", "/admin/add-course-List"]}
           />
-        
+
         </nav>
 
         <div className="p-4 border-t border-slate-800">
