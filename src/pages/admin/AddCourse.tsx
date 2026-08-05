@@ -8,26 +8,32 @@ export default function CourseCategoryList() {
     const [categories, setCategories] = useState([]);
 
     const [search, setSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const navigate = useNavigate();
+
     useEffect(() => {
-        fetchCategories();
-    }, []);
+        fetchCategories(currentPage, search);
+    }, [currentPage]);
 
-    const fetchCategories = async () => {
-
+    const fetchCategories = async (page = currentPage, searchText = search) => {
         try {
-
-            const res = await API.get("/course-category");
+            const res = await API.get("/course-category", {
+                params: {
+                    page,
+                    limit: 1,
+                    search: searchText
+                }
+            });
 
             setCategories(res.data.data);
+            setTotalPages(res.data.pagination?.totalPages || 1);
 
         } catch (err) {
-
             console.log(err);
-
         }
-    }
+    };
 
     const deleteCategory = async (id: any) => {
 
@@ -47,16 +53,6 @@ export default function CourseCategoryList() {
 
     };
 
-    const filteredCategories = categories.filter((item: any) =>
-        item.categoryname
-            .toLowerCase()
-            .includes(search.toLowerCase())
-    );
-
-
-    function setCurrentPage(_arg0: number) {
-        throw new Error("Function not implemented.");
-    }
 
     return (
         <div className="min-h-screen bg-slate-100 p-8">
@@ -95,8 +91,15 @@ export default function CourseCategoryList() {
                                 placeholder="Search category..."
                                 value={search}
                                 onChange={(e) => {
-                                    setSearch(e.target.value);
+
+                                    const value = e.target.value;
+
+                                    setSearch(value);
+
                                     setCurrentPage(1);
+
+                                    fetchCategories(1, value);
+
                                 }}
                                 className="w-full h-14 rounded-2xl border border-slate-300 pl-14 pr-5 outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600"
                             />
@@ -136,7 +139,7 @@ export default function CourseCategoryList() {
 
                         <tbody>
 
-                            {filteredCategories.map((item: any) => (
+                            {categories.map((item: any) => (
 
                                 <tr key={item.id}>
 
@@ -203,7 +206,26 @@ export default function CourseCategoryList() {
 
                     </table>
 
+                    <div className="flex justify-end items-center gap-3 p-5">
+                        <button
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage((prev) => prev - 1)}
+                            className="px-4 py-2 rounded bg-gray-200"
+                        >
+                            Previous
+                        </button>
 
+                        <span>{currentPage} / {totalPages}</span>
+
+                        <button
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage((prev) => prev + 1)}
+                            className="px-4 py-2 rounded bg-indigo-600 text-white"
+                        >
+                            Next
+                        </button>
+
+                    </div>
                 </div>
 
             </div>
